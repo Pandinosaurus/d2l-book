@@ -33,8 +33,16 @@ class TestLibrary(unittest.TestCase):
                   ),
                   ('float(d2l.reduce_sum(cmp.astype(y.dtype)))',
                    'float(cmp.astype(y.dtype).sum())',
-                   )
-        ]
+                   ),
+                  ('d2l.reshape(x[i:], (-1, 1))', 'x[i:].reshape((-1, 1))'),
+                  ('d2l.reshape(d2l.reduce_sum(x[i:]), -1)',
+                   'x[i:].sum().reshape(-1)'),
+                  ('d2l.reduce_sum(x[j:].reshape(-1))',
+                   'x[j:].reshape(-1).sum()'),
+                  ('d2l.reduce_sum(d2l.reshape(x[i:], -1))',
+                   'x[i:].reshape(-1).sum()')
+                  ]
+
         for a, b in pairs:
             self.nb.cells[0].source = a
             nb = library.replace_alias(self.nb, self.tab_lib)
